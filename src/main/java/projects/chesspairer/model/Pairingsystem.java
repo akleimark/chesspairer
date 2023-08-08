@@ -10,7 +10,9 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "pairingsystem")
-
+/**
+ * This is the model class, that handles all the pairing systems; i.e Monrad, Berger.
+ */
 public class Pairingsystem implements Serializable
 {	
 	private static final long serialVersionUID = -3668833528375544402L;

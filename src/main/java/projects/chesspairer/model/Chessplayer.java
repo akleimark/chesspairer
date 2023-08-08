@@ -7,6 +7,7 @@ import java.util.Objects;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.ForeignKey;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
@@ -14,6 +15,11 @@ import jakarta.persistence.Table;
 
 @Entity(name = "Chessplayer")
 @Table(name = "chessplayer")
+
+/**
+ * This is the model class, that handles all the players. 
+ */
+
 public class Chessplayer implements Serializable
 {	
 	private static final long serialVersionUID = 2984470458571253314L;
@@ -45,8 +51,9 @@ public class Chessplayer implements Serializable
 	@Column(name = "birthdate", nullable = false)
 	private LocalDate birthdate;
 	
+	
 	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "chessclub_id", referencedColumnName = "chessclub_id")
+	@JoinColumn(name = "chessclub_id", referencedColumnName = "chessclub_id", foreignKey = @ForeignKey(name = "FK_CHESSPLAYER_CHESSCLUB"))
 	private Chessclub chessclub;
 	
 	public int getChessplayerId()

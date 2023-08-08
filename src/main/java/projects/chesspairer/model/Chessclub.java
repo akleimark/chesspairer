@@ -10,6 +10,9 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "chessclub")
+/**
+ * This is the model class, that handles all the clubs.
+ */
 public class Chessclub implements Serializable
 {
 	private static final long serialVersionUID = -5499983697978265977L;
@@ -23,7 +26,6 @@ public class Chessclub implements Serializable
 		super();
 		this.chessclubId = chessclubId;
 	}
-	
 	
 	@Override
 	public int hashCode()
@@ -50,11 +52,14 @@ public class Chessclub implements Serializable
 		return Objects.equals(chessclubId, other.chessclubId);
 	}
 
-
 	public String getChessclubId()
 	{
 		return chessclubId;
 	}
-
 	
+	@Override
+	public String toString()
+	{
+		return "Chessclub: " + this.chessclubId;
+	}
 }

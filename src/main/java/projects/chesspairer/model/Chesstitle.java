@@ -9,6 +9,9 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "chesstitle")
+/**
+ * This is the model class, that handles all the chess titles; i.e GM, IM, FM.
+ */
 public class Chesstitle
 {
 	@Override
