@@ -21,6 +21,12 @@ public class Chessclub implements Serializable
 	@Column(name = "chessclub_id", nullable = false, columnDefinition = "varchar(128)")
 	private final String chessclubId;
 	
+	
+	public Chessclub()
+	{
+		chessclubId = "";
+	}
+	
 	public Chessclub(String chessclubId)
 	{
 		super();

@@ -25,9 +25,9 @@ public class ChessplayerService
 		return repository.findAll();
 	}
 	
-	public void saveChessplayer(Chessplayer chessplayer)
+	public Chessplayer saveChessplayer(Chessplayer chessplayer)
 	{
-		repository.save(chessplayer);
+		return repository.save(chessplayer);
 	}
 	
 	public void deleteChessplayerById(int chessplayerId)

@@ -24,6 +24,11 @@ public class Chessplayer implements Serializable
 {	
 	private static final long serialVersionUID = 2984470458571253314L;
 
+	public Chessplayer()
+	{
+		this.chessplayerId = -1;
+	}
+	
 	public Chessplayer(int chessplayerId, String firstname, String lastname, String biologicalSex, LocalDate birthdate,
 			Chessclub chessclub)
 	{		
