@@ -14,31 +14,6 @@ import jakarta.persistence.Table;
  */
 public class Chesstitle
 {
-	@Override
-	public int hashCode()
-	{
-		return Objects.hash(chesstitleId, chesstitleOrder);
-	}
-
-	@Override
-	public boolean equals(Object obj)
-	{
-		if (this == obj)
-		{
-			return true;
-		}
-		if (obj == null)
-		{
-			return false;
-		}
-		if (getClass() != obj.getClass())
-		{
-			return false;
-		}
-		Chesstitle other = (Chesstitle) obj;
-		return Objects.equals(chesstitleId, other.chesstitleId) && chesstitleOrder == other.chesstitleOrder;
-	}
-
 	@Id
 	@Column(name = "chesstitle_id", nullable = false, columnDefinition = "varchar(128)")
 	private String chesstitleId;
@@ -76,5 +51,32 @@ public class Chesstitle
 	public void setChesstitleOrder(int chesstitleOrder)
 	{
 		this.chesstitleOrder = chesstitleOrder;
+	}	
+	
+	@Override
+	public int hashCode()
+	{
+		return Objects.hash(chesstitleId, chesstitleOrder);
 	}
+
+	@Override
+	public boolean equals(Object obj)
+	{
+		if (this == obj)
+		{
+			return true;
+		}
+		if (obj == null)
+		{
+			return false;
+		}
+		if (getClass() != obj.getClass())
+		{
+			return false;
+		}
+		Chesstitle other = (Chesstitle) obj;
+		return Objects.equals(chesstitleId, other.chesstitleId) && chesstitleOrder == other.chesstitleOrder;
+	}	
+	
+	
 }

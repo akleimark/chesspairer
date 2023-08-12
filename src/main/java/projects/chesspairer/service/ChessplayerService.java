@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import projects.chesspairer.model.Chessplayer;
@@ -22,7 +23,7 @@ public class ChessplayerService
 			
 	public List<Chessplayer> getAllChessplayers()
 	{
-		return repository.findAll();
+		return repository.findAll(Sort.by(Sort.Direction.ASC, "chessplayerId"));
 	}
 	
 	public Chessplayer saveChessplayer(Chessplayer chessplayer)
@@ -39,7 +40,4 @@ public class ChessplayerService
 	{
 		return repository.findById(chessplayerId); 		 
 	}
-	
-	
-	
 }

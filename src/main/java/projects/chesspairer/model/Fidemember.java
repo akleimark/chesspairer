@@ -37,13 +37,11 @@ public class Fidemember implements Serializable
 		this.chessplayer = chessplayer;
 	}
 
-
 	@Override
 	public int hashCode()
 	{
 		return Objects.hash(chessplayer, fidemeberId);
 	}
-
 
 	@Override
 	public boolean equals(Object obj)
@@ -63,5 +61,4 @@ public class Fidemember implements Serializable
 		Fidemember other = (Fidemember) obj;
 		return Objects.equals(chessplayer, other.chessplayer) && fidemeberId == other.fidemeberId;
 	}
-	
 }
