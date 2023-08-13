@@ -9,14 +9,14 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "chessplayer_rating")
-public class ChessplayerRating implements Serializable
+@Table(name = "fidemember_rating")
+public class FidememberRating implements Serializable
 {
 	private static final long serialVersionUID = -8755769040678702667L;
 	
 	@Id
-	@Column(name = "chessplayer_id", updatable = false)
-	private int chessplayerId;
+	@Column(name = "fidemember_id", updatable = false)
+	private int fidememberId;
 	
 	@Column(name = "standard_rating", columnDefinition = "smallint", nullable = false)
 	private int standardRating;
@@ -27,22 +27,22 @@ public class ChessplayerRating implements Serializable
 	@Column(name = "blitz_rating", columnDefinition = "smallint", nullable = false)
 	private int blitzRating;
 	
-	public ChessplayerRating(int chessplayerId, int standardRating, int rapidRating, int blitzRating)
+	public FidememberRating(int fidememberId, int standardRating, int rapidRating, int blitzRating)
 	{
-		this.chessplayerId = chessplayerId;
+		this.fidememberId = fidememberId;
 		this.standardRating = standardRating;
 		this.rapidRating = rapidRating;
 		this.blitzRating = blitzRating;
 	}
 	
-	public int getChessplayerId()
+	public int getFidememberId()
 	{
-		return chessplayerId;
+		return fidememberId;
 	}
 	
-	public void setChessplayerId(int chessplayerId)
+	public void setFidememberId(int fidememberId)
 	{
-		this.chessplayerId = chessplayerId;
+		this.fidememberId = fidememberId;
 	}
 	
 	public int getStandardRating()
@@ -78,7 +78,7 @@ public class ChessplayerRating implements Serializable
 	@Override
 	public int hashCode()
 	{
-		return Objects.hash(blitzRating, chessplayerId, rapidRating, standardRating);
+		return Objects.hash(blitzRating, fidememberId, rapidRating, standardRating);
 	}
 
 	@Override
@@ -96,11 +96,8 @@ public class ChessplayerRating implements Serializable
 		{
 			return false;
 		}
-		ChessplayerRating other = (ChessplayerRating) obj;
-		return blitzRating == other.blitzRating && chessplayerId == other.chessplayerId
+		FidememberRating other = (FidememberRating) obj;
+		return blitzRating == other.blitzRating && fidememberId == other.fidememberId
 				&& rapidRating == other.rapidRating && standardRating == other.standardRating;
 	}
-	
-	
-	
 }

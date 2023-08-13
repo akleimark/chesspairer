@@ -5,6 +5,8 @@ import java.util.Objects;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
@@ -18,25 +20,42 @@ public class Chessclub implements Serializable
 	private static final long serialVersionUID = -5499983697978265977L;
 	
 	@Id
-	@Column(name = "chessclub_id", nullable = false, columnDefinition = "varchar(128)")
-	private final String chessclubId;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "chessclub_id")
+	private int chessclubId;
 	
+	@Column(name = "chessclub_name", columnDefinition = "varchar(128)")
+	private String chessclubName;
 	
 	public Chessclub()
 	{
-		chessclubId = "";
+		chessclubName = "";
 	}
 	
-	public Chessclub(String chessclubId)
+	public Chessclub(String chessclubName)
 	{
-		super();
-		this.chessclubId = chessclubId;
+		this.chessclubName = chessclubName;
+	}
+	
+	public int getChessclubId()
+	{
+		return chessclubId;
+	}
+	
+	public String getChessclubName()
+	{
+		return chessclubName;
+	}
+	
+	public void setChessclubName(String chessclubName)
+	{
+		this.chessclubName = chessclubName;
 	}
 	
 	@Override
 	public int hashCode()
 	{
-		return Objects.hash(chessclubId);
+		return Objects.hash(chessclubId, chessclubName);
 	}
 	
 	@Override
@@ -55,17 +74,12 @@ public class Chessclub implements Serializable
 			return false;
 		}
 		Chessclub other = (Chessclub) obj;
-		return Objects.equals(chessclubId, other.chessclubId);
-	}
-
-	public String getChessclubId()
-	{
-		return chessclubId;
+		return chessclubId == other.chessclubId && Objects.equals(chessclubName, other.chessclubName);
 	}
 	
 	@Override
 	public String toString()
 	{
-		return "Chessclub: " + this.chessclubId;
+		return "Chessclub: " + this.chessclubName;
 	}
 }

@@ -5,6 +5,8 @@ import java.util.Objects;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
@@ -16,24 +18,39 @@ import jakarta.persistence.Table;
 public class Pairingsystem implements Serializable
 {	
 	private static final long serialVersionUID = -3668833528375544402L;
-	@Id
-	@Column(name = "pairingsystem_id", nullable = false, columnDefinition = "varchar(128)")
-	private final String pairingsystemId;
 	
-	public Pairingsystem(String pairingsystemId)
+	@Id
+	@Column(name = "pairingsystem_id", nullable = false, columnDefinition = "smallint")
+	@GeneratedValue (strategy = GenerationType.IDENTITY)
+	private int pairingsystemId;
+	
+	@Column(name = "pairingsystem_name", nullable = false, columnDefinition = "varchar(128)", unique = true)
+	private String pairingsystemName;
+	
+	public Pairingsystem(String pairingsystemName)
 	{		
-		this.pairingsystemId = pairingsystemId;
+		this.pairingsystemName = pairingsystemName;
 	}
 
-	public String getPairingsystemId()
+	public int getPairingsystemId()
 	{
 		return pairingsystemId;
+	}
+		
+	public String getPairingsystemName()
+	{
+		return pairingsystemName;
+	}
+	
+	public void setPairingsystemName(String pairingsystemName)
+	{
+		this.pairingsystemName = pairingsystemName;
 	}
 
 	@Override
 	public int hashCode()
 	{
-		return Objects.hash(pairingsystemId);
+		return Objects.hash(pairingsystemId, pairingsystemName);
 	}
 
 	@Override
@@ -52,10 +69,8 @@ public class Pairingsystem implements Serializable
 			return false;
 		}
 		Pairingsystem other = (Pairingsystem) obj;
-		return Objects.equals(pairingsystemId, other.pairingsystemId);
+		return pairingsystemId == other.pairingsystemId && Objects.equals(pairingsystemName, other.pairingsystemName);
 	}
-	
-	
 	
 	
 }

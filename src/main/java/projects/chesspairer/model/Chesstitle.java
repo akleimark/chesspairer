@@ -4,6 +4,8 @@ import java.util.Objects;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
@@ -15,34 +17,48 @@ import jakarta.persistence.Table;
 public class Chesstitle
 {
 	@Id
-	@Column(name = "chesstitle_id", nullable = false, columnDefinition = "varchar(128)")
-	private String chesstitleId;
+	@Column(name = "chesstitle_id", nullable = false, columnDefinition = "smallint")
+	@GeneratedValue (strategy = GenerationType.IDENTITY)
+	private int chesstitleId;
+	
+	@Column(name = "chessclub_name", columnDefinition = "varchar(128)", unique = true, nullable = false)
+	private String chesstitleName;
 	
 	@Column(name = "chesstitle_order", nullable = false, unique = true)
 	private int chesstitleOrder;
 	
 	public Chesstitle()
 	{
-		chesstitleId = "";
+		chesstitleName = "";
 		chesstitleOrder = -1;
 	}
 	
-	public Chesstitle(String pChesstitleId, int pChesstitleOrder)
+	public Chesstitle(String chesstitleName, int chesstitleOrder)
 	{
-		chesstitleId = pChesstitleId;
-		chesstitleOrder = pChesstitleOrder;
+		this.chesstitleName = chesstitleName;
+		this.chesstitleOrder = chesstitleOrder;
 	}
 
-	public String getChesstitleId()
+	public int getChesstitleId()
 	{
 		return chesstitleId;
 	}
 
-	public void setChesstitleId(String chesstitleId)
+	public void setChesstitleId(int chesstitleId)
 	{
 		this.chesstitleId = chesstitleId;
 	}
-
+	
+	public String getChesstitleName()
+	{
+		return chesstitleName;
+	}
+	
+	public void setChesstitleName(String chesstitleName)
+	{
+		this.chesstitleName = chesstitleName;
+	}
+	
 	public int getChesstitleOrder()
 	{
 		return chesstitleOrder;
@@ -51,12 +67,12 @@ public class Chesstitle
 	public void setChesstitleOrder(int chesstitleOrder)
 	{
 		this.chesstitleOrder = chesstitleOrder;
-	}	
-	
+	}
+
 	@Override
 	public int hashCode()
 	{
-		return Objects.hash(chesstitleId, chesstitleOrder);
+		return Objects.hash(chesstitleId, chesstitleName, chesstitleOrder);
 	}
 
 	@Override
@@ -75,8 +91,7 @@ public class Chesstitle
 			return false;
 		}
 		Chesstitle other = (Chesstitle) obj;
-		return Objects.equals(chesstitleId, other.chesstitleId) && chesstitleOrder == other.chesstitleOrder;
+		return chesstitleId == other.chesstitleId && Objects.equals(chesstitleName, other.chesstitleName)
+				&& chesstitleOrder == other.chesstitleOrder;
 	}	
-	
-	
 }

@@ -37,9 +37,9 @@ public class WebController
 	
 	@PostMapping("/add-chessplayer")
     public String addChessplayer(@ModelAttribute Chessplayer chessplayer) 
-	{		       		
+	{				
 		chessplayerService.saveChessplayer(chessplayer);
-        return "index";
+		return "redirect:utilities/players";
     }
 	
 	

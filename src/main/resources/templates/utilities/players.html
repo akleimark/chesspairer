@@ -14,6 +14,8 @@
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
 		integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
 		crossorigin="anonymous"></script>
+	<script src="https://code.jquery.com/jquery-3.7.0.js"
+		integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous"></script>
 	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
 		<div class="container-fluid">
 			<a class="navbar-brand" href="#">Navbar</a>
@@ -45,18 +47,30 @@
 			<thead>
 				<tr>
 					<th scope="col">Id</th>
+					<th scope="col">Title</th>
 					<th scope="col">Name</th>
+					<th scope="col">Birthdate</th>
 					<th scope="col">EloRating</th>
+					<th scope="col">Federation</th>
 					<th scope="col">Club</th>
+					<th scope="col">Redigera</th>
+					<th scope="col">Radera</th>
 
 				</tr>
 			</thead>
 			<tbody>
 				<tr scope="row" th:each="chessplayer : ${chessplayers}">
-					<td th:text="${chessplayer.getChessplayerId()}"></td>
-					<td th:text="${chessplayer.getFullName()}"></td>
-					<td th:text="${chessplayer.getEloRating('standard')}"></td>
-					<td th:text="${chessplayer.getChessclub().getChessclubId()}"></td>
+					<td class="align-middle" th:text="${chessplayer.getChessplayerId()}"></td>
+					<td class="align-middle" th:text="${chessplayer.getChesstitle()}"></td>
+					<td class="align-middle" th:text="${chessplayer.getName()}"></td>
+					<td class="align-middle" th:text="${chessplayer.getBirthdate()}"></td>
+					<td class="align-middle" th:text="${chessplayer.getEloRating('standard')}"></td>
+					<td class="align-middle" th:text="${chessplayer.getFederation()}"></td>
+					<td class="align-middle" th:text="${chessplayer.getChessclub().getChessclubName()}"></td>
+					<td><button id="edit_${chessplayer.getChessplayerId()}" type="button"
+							class="btn btn-primary edit-player">Edit</button></td>
+					<td><button id="edit_${chessplayer.getChessplayerId()}" type="button"
+							class="btn btn-danger delete-player">Delete</button></td>
 				</tr>
 
 			</tbody>
@@ -69,7 +83,8 @@
 		</button>
 
 		<!-- Modal -->
-		<div class="modal fade" id="addPlayerModal" tabindex="-1" aria-labelledby="addPlayerModalLabel" aria-hidden="true">
+		<div class="modal fade" id="addPlayerModal" tabindex="-1" aria-labelledby="addPlayerModalLabel"
+			aria-hidden="true">
 			<div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header">
@@ -78,15 +93,21 @@
 					</div>
 					<form action="#" th:action="@{/add-chessplayer}" th:object="${chessplayer}" method="post">
 						<div class="modal-body">
-							<input placeholder="firstname" type="text" th:field="*{firstname}" required/><br />
-							<input placeholder="lastname" type="text" th:field="*{lastname}" required /><br />
-							<input name="birthdate" placeholder="YYYY-MM-DD" type="text" required /><br />
-							<label>Male</label><input type="radio" name="gender" />
-							<label>Female</label><input type="radio" name="gender" /><br />
-							<select th:each="chessclub : ${chessclubs}">							
-								<option th:text="${chessclub.getChessclubId()}"></option>
+							<input class="form-control" placeholder="firstname" type="text" th:field="*{firstname}"
+								required /><br />
+							<input class="form-control" placeholder="lastname" type="text" th:field="*{lastname}"
+								required /><br />
+							<input class="form-control" name="birthdate" placeholder="YYYY-MM-DD" type="text"
+								th:field="*{birthdate}" required /><br />
+							<label class="form-label mx-1">Male</label><input class="form-check-input" type="radio"
+								name="gender" th:field="*{biologicalSex}" th:value="male" />
+							<label class="form-label mx-1">Female</label><input class="form-check-input" type="radio"
+								name="gender" th:field="*{biologicalSex}" th:value="female" /><br />
+							<select class="form-select" th:field="*{chessclub}">
+								<option th:each="chessclub : ${chessclubs}" th:text="${chessclub.getChessclubName()}"
+									th:value="${chessclub.getChessclubId()}"></option>
 							</select>
-							
+
 						</div>
 						<div class="modal-footer">
 							<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -98,6 +119,14 @@
 		</div>
 
 	</div>
+
+	<script>
+
+		jQuery(".edit-player").click(function () {
+			alert("here");
+		});
+
+	</script>
 
 
 </body>

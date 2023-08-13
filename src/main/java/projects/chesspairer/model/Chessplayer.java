@@ -3,16 +3,16 @@ package projects.chesspairer.model;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
-import java.util.Set;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ForeignKey;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
@@ -20,14 +20,15 @@ import jakarta.persistence.Table;
 @Table(name = "chessplayer")
 
 /**
- * This is the model class, that handles all the players. 
+ * This is the model class, that handles all the players.
  */
 
 public class Chessplayer implements Serializable
-{	
+{
 	private static final long serialVersionUID = 2984470458571253314L;
 	
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "chessplayer_id", updatable = false)
 	private final int chessplayerId;
 	
@@ -44,16 +45,20 @@ public class Chessplayer implements Serializable
 	private LocalDate birthdate;
 	
 	@ManyToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "chessclub_id", referencedColumnName = "chessclub_id", foreignKey = @ForeignKey(name = "FK_CHESSPLAYER_CHESSCLUB"))
+	@JoinColumn(name = "federation_id", referencedColumnName = "federation_id", foreignKey = @ForeignKey(name = "FK_CHESSPLAYER_FEDERATION"))
+	private Federation federation;
+	
+	@ManyToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "chessclub_id", nullable = false, referencedColumnName = "chessclub_id", foreignKey = @ForeignKey(name = "FK_CHESSPLAYER_CHESSCLUB"))
 	private Chessclub chessclub;
 	
-	@OneToMany(cascade = CascadeType.ALL)
-	@JoinColumn(foreignKey = @ForeignKey(name = "FK_CHESSPLAYER_TITLE"))
-	private Set<Chesstitle> chesstitles;
-	
 	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(foreignKey = @ForeignKey(name = "FK_CHESSPLAYER_RATING"))
-	private ChessplayerRating rating;
+	private Fidemember fidemember;
+	
+	public String getName()
+	{
+		return firstname + " " + lastname;
+	}
 	
 	public Chessplayer()
 	{
@@ -61,17 +66,16 @@ public class Chessplayer implements Serializable
 	}
 	
 	public Chessplayer(int chessplayerId, String firstname, String lastname, String biologicalSex, LocalDate birthdate,
-			Chessclub chessclub)
-	{		
+			Federation federation, Chessclub chessclub)
+	{
 		this.chessplayerId = chessplayerId;
 		this.firstname = firstname;
 		this.lastname = lastname;
 		this.biologicalSex = biologicalSex;
 		this.birthdate = birthdate;
+		this.federation = federation;
 		this.chessclub = chessclub;
-		
 	}
-	
 	
 	public int getChessplayerId()
 	{
@@ -82,85 +86,88 @@ public class Chessplayer implements Serializable
 	{
 		return firstname;
 	}
-
+	
 	public void setFirstname(String firstname)
 	{
 		this.firstname = firstname;
 	}
-
+	
 	public String getLastname()
 	{
 		return lastname;
 	}
-
+	
 	public void setLastname(String lastname)
 	{
 		this.lastname = lastname;
 	}
-
+	
 	public String getBiologicalSex()
 	{
 		return biologicalSex;
 	}
-
+	
 	public void setBiologicalSex(String biologicalSex)
 	{
 		this.biologicalSex = biologicalSex;
 	}
-
+	
 	public LocalDate getBirthdate()
 	{
 		return birthdate;
 	}
-
+	
 	public void setBirthdate(LocalDate birthdate)
 	{
 		this.birthdate = birthdate;
 	}
-
+	
 	public Chessclub getChessclub()
 	{
 		return chessclub;
 	}
-
+	
 	public void setChessclub(Chessclub chessclub)
 	{
 		this.chessclub = chessclub;
 	}
-
 	
-	
-	
-	
-	public int getEloRating(String ratingType) throws Exception
+	public Federation getFederation()
 	{
-		if(rating == null)
+		return federation;
+	}
+	
+	public void setFederation(Federation federation)
+	{
+		this.federation = federation;
+	}
+	
+	public int getEloRating(String type)
+	{
+		if(fidemember == null)
 		{
 			return 0;
 		}
+		return fidemember.getRating(type);
 		
-		if(ratingType.equals("standard"))
+	}
+	
+	public String getChesstitle()
+	{
+		if(fidemember == null)
 		{
-			return this.rating.getStandardRating();
-		}
-		if(ratingType.equals("rapid"))
-		{
-			return this.rating.getRapidRating();
-		}
-		if(ratingType.equals("blitz"))
-		{
-			return this.rating.getBlitzRating();
+			return "";
 		}
 		
-		throw new Exception("Illegal rating type.");
+		return fidemember.getHighestTitle();
 	}
 	
 	@Override
 	public int hashCode()
 	{
-		return Objects.hash(biologicalSex, birthdate, chessclub, chessplayerId, firstname, lastname);
+		return Objects.hash(biologicalSex, birthdate, federation, chessclub, chessplayerId, firstname, lastname);
 	}
-
+	
 	@Override
 	public boolean equals(Object obj)
 	{
@@ -178,7 +185,8 @@ public class Chessplayer implements Serializable
 		}
 		Chessplayer other = (Chessplayer) obj;
 		return Objects.equals(biologicalSex, other.biologicalSex) && Objects.equals(birthdate, other.birthdate)
-				&& Objects.equals(chessclub, other.chessclub) && chessplayerId == other.chessplayerId
-				&& Objects.equals(firstname, other.firstname) && Objects.equals(lastname, other.lastname);
+				&& Objects.equals(chessclub, other.chessclub) && Objects.equals(federation, other.federation)
+				&& chessplayerId == other.chessplayerId && Objects.equals(firstname, other.firstname)
+				&& Objects.equals(lastname, other.lastname);
 	}
 }

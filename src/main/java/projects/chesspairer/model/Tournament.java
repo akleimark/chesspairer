@@ -9,6 +9,8 @@ import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ForeignKey;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
@@ -25,8 +27,12 @@ public class Tournament implements Serializable
 	private static final long serialVersionUID = -9210344309408506509L;
 	
 	@Id
-	@Column(name = "tournament_id", updatable = false, nullable = false, columnDefinition = "varchar(128)")
-	private String tournamentId;
+	@Column(name = "tournament_id", updatable = false, nullable = false)
+	@GeneratedValue (strategy = GenerationType.IDENTITY)
+	private int tournamentId;
+	
+	@Column(name = "tournament_name",  nullable = false, columnDefinition = "varchar(128)")
+	private String tournamentName;
 	
 	@Column(name = "startdate", nullable = false)
 	private LocalDate startdate;
@@ -48,10 +54,10 @@ public class Tournament implements Serializable
 	@JoinColumn(foreignKey = @ForeignKey(name = "FK_TOURNAMENT_TOURNAMENTPLAYER"))
 	private Set<TournamentPlayer> tournamentPlayers;	
 	
-	public Tournament(String tournamentId, LocalDate startdate, LocalDate enddate, int numberOfRounds,
+	public Tournament(String tournamentName, LocalDate startdate, LocalDate enddate, int numberOfRounds,
 			int tournamentType, Pairingsystem pairingsystem)
 	{
-		this.tournamentId = tournamentId;
+		this.tournamentName = tournamentName;
 		this.startdate = startdate;
 		this.enddate = enddate;
 		this.numberOfRounds = numberOfRounds;
@@ -59,16 +65,26 @@ public class Tournament implements Serializable
 		this.pairingsystem = pairingsystem;
 	}
 
-	public String getTournamentId()
+	public int getTournamentId()
 	{
 		return tournamentId;
 	}
 
-	public void setTournamentId(String tournamentId)
+	public void setTournamentId(int tournamentId)
 	{
 		this.tournamentId = tournamentId;
 	}
+	
+	public String getTournamentName()
+	{
+		return tournamentName;
+	}
 
+	public void setTournamentName(String tournamentName)
+	{
+		this.tournamentName = tournamentName;
+	}
+	
 	public LocalDate getStartdate()
 	{
 		return startdate;
@@ -122,7 +138,8 @@ public class Tournament implements Serializable
 	@Override
 	public int hashCode()
 	{
-		return Objects.hash(enddate, numberOfRounds, pairingsystem, startdate, tournamentId, tournamentType);
+		return Objects.hash(enddate, numberOfRounds, pairingsystem, startdate, tournamentId, tournamentName,
+				tournamentPlayers, tournamentType);
 	}
 
 	@Override
@@ -143,7 +160,8 @@ public class Tournament implements Serializable
 		Tournament other = (Tournament) obj;
 		return Objects.equals(enddate, other.enddate) && numberOfRounds == other.numberOfRounds
 				&& Objects.equals(pairingsystem, other.pairingsystem) && Objects.equals(startdate, other.startdate)
-				&& Objects.equals(tournamentId, other.tournamentId) && tournamentType == other.tournamentType;
+				&& tournamentId == other.tournamentId && Objects.equals(tournamentName, other.tournamentName)
+				&& Objects.equals(tournamentPlayers, other.tournamentPlayers) && tournamentType == other.tournamentType;
 	}
 		
 }
