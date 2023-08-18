@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html>
-
 <head>
 	<meta charset="ISO-8859-1" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -9,7 +8,6 @@
 		integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
 	<title>Chesspairer</title>
 </head>
-
 <body>
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
 		integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
@@ -67,22 +65,26 @@
 					<td class="align-middle" th:text="${chessplayer.getEloRating('standard')}"></td>
 					<td class="align-middle" th:text="${chessplayer.getFederation()}"></td>
 					<td class="align-middle" th:text="${chessplayer.getChessclub().getChessclubName()}"></td>
-					<td><button id="edit_${chessplayer.getChessplayerId()}" type="button"
-							class="btn btn-primary edit-player">Edit</button></td>
-					<td><button id="edit_${chessplayer.getChessplayerId()}" type="button"
-							class="btn btn-danger delete-player">Delete</button></td>
+					<td>
+						<button th:id="'edit_' + ${chessplayer.getChessplayerId()}" type="button"
+							class="btn btn-primary edit-player" data-bs-toggle="modal"
+							data-bs-target="#editPlayerModal">Edit</button>
+						</form>
+						<form action="#" th:action="@{/chessplayer/delete/} + ${chessplayer.getChessplayerId()}"
+							th:object="${chessplayer}" method="get">
+					<td><input th:id="'delete_' + ${chessplayer.getChessplayerId()}" type="submit"
+							class="btn btn-danger delete-player" value="Delete"></td>
+					</form>
 				</tr>
-
 			</tbody>
 		</table>
-
 
 		<!-- Button trigger modal -->
 		<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addPlayerModal">
 			Add a player
 		</button>
 
-		<!-- Modal -->
+		<!-- Add chessplayerModal -->
 		<div class="modal fade" id="addPlayerModal" tabindex="-1" aria-labelledby="addPlayerModalLabel"
 			aria-hidden="true">
 			<div class="modal-dialog">
@@ -118,17 +120,99 @@
 			</div>
 		</div>
 
+		<!-- Edit chessplayerModal -->
+		<div class="modal fade" id="editPlayerModal" tabindex="-1" aria-labelledby="editPlayerModalLabel"
+			aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h1 class="modal-title fs-5" id="editPlayerModal">Edit a chessplayer</h1>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<form action="#" th:action="@{/update-chessplayer}" th:object="${chessplayer}" method="post">
+						<div class="modal-body">
+							<input class="form-control" type="number" th:field="*{chessplayerId}" id="edit_id" disabled /><br />
+							<input class="form-control" placeholder="firstname" type="text" th:field="*{firstname}"
+								id="edit_firstname" required /><br />
+							<input class="form-control" placeholder="lastname" type="text" th:field="*{lastname}"
+								required id="edit_lastname" /><br />
+							<input class="form-control" name="birthdate" placeholder="YYYY-MM-DD" type="text"
+								id="edit_birthdate" th:field="*{birthdate}" required /><br />
+							<label class="form-label mx-1">Male</label><input class="form-check-input" type="radio"
+								id="male_button" name="gender" th:field="*{biologicalSex}" th:value="male" />
+							<label class="form-label mx-1">Female</label><input class="form-check-input" type="radio"
+								id="female_button" name="gender" th:field="*{biologicalSex}" th:value="female" /><br />
+							<select class="form-select" th:field="*{chessclub}">
+								<option th:each="chessclub : ${chessclubs}" th:text="${chessclub.getChessclubName()}"
+									th:value="${chessclub.getChessclubId()}"></option>
+							</select>
+
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+							<button id="save_chessplayer" type="button" class="btn btn-primary">Save</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
 	</div>
-
 	<script>
-
-		jQuery(".edit-player").click(function () {
-			alert("here");
+		jQuery("#save_chessplayer").click(function () 
+		{
+			var url = "/chessplayer/update";
+			jQuery.ajax(
+			{
+				url: url,
+				type: "POST",
+				data:JSON.stringify(
+				{
+					"chessplayerId": jQuery("#edit_id").val(),
+					"firstname": jQuery("#edit_firstname").val(),
+					"lastname": jQuery("#edit_lastname").val(),
+					"birthdate": jQuery("#edit_birthdate").val(),
+					"biologicalSex": jQuery('input[name="biologicalSex"]:checked').val(),
+					"chessclub":
+					{
+						"chessclubId": 1,
+						"chessclubName": "SA Mark"
+					}
+				}),
+				dataType: "json",
+				contentType: "application/json",
+				success: function (result) 
+				{
+					location.reload();				
+				}
+			});				
 		});
 
+		jQuery(".edit-player").click(function () {
+			var id = jQuery(this).attr('id').substring(5);
+			var url = "/chessplayer/find/" + id;
+
+			jQuery.ajax(
+			{
+				url: url,
+				success: function (result) 
+				{
+					jQuery("#edit_id").val(result["chessplayerId"]);
+					jQuery("#edit_firstname").val(result["firstname"]);
+					jQuery("#edit_lastname").val(result["lastname"]);
+					jQuery("#edit_birthdate").val(result["birthdate"]);
+					if(result["biologicalSex"] == "male")
+					{
+						jQuery("#male_button").attr('checked', true);
+						jQuery("#female_button").attr('checked', false);	
+					}
+					else
+					{
+						jQuery("#male_button").attr('checked', false);
+						jQuery("#female_button").attr('checked', true);
+					}						
+				}
+			});
+		});				
 	</script>
-
-
 </body>
-
 </html>
