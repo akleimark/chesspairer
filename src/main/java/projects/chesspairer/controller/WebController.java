@@ -38,7 +38,16 @@ public class WebController
 	@PostMapping("/add-chessplayer")
     public String addChessplayer(@ModelAttribute Chessplayer chessplayer) 
 	{				
-		chessplayerService.saveChessplayer(chessplayer);
+		chessplayerService.addChessplayer(chessplayer);
+		return "redirect:utilities/players";
+    }
+	
+	@PostMapping("/update-chessplayer")
+    public String updateChessplayer(@ModelAttribute Chessplayer chessplayer) 
+	{				
+		System.out.println("Id: " + chessplayer.getChessplayerId());
+		
+		//chessplayerService.updateChessplayer(chessplayer);
 		return "redirect:utilities/players";
     }
 	

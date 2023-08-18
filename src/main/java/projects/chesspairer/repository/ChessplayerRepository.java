@@ -6,5 +6,5 @@ import projects.chesspairer.model.Chessplayer;
 
 public interface ChessplayerRepository extends JpaRepository<Chessplayer, Integer>
 {
-	
+	public Chessplayer findChessplayerByChessplayerId(int id);
 }

@@ -1,7 +1,6 @@
 package projects.chesspairer.service;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -26,18 +25,28 @@ public class ChessplayerService
 		return repository.findAll(Sort.by(Sort.Direction.ASC, "chessplayerId"));
 	}
 	
-	public Chessplayer saveChessplayer(Chessplayer chessplayer)
+	public Chessplayer addChessplayer(Chessplayer chessplayer)
 	{
 		return repository.save(chessplayer);
 	}
+	
+	public Chessplayer updateChessplayer(Chessplayer chessplayer)
+	{
+		return repository.save(chessplayer);
+	}
+		
+	public Chessplayer findChessplayerById(int id)
+	{
+		return repository.findChessplayerByChessplayerId(id);
+	}
+	
 	
 	public void deleteChessplayerById(int chessplayerId)
 	{
 		repository.deleteById(chessplayerId);
 	}
+
 	
-	public Optional<Chessplayer> findChessplayerById(int chessplayerId)
-	{
-		return repository.findById(chessplayerId); 		 
-	}
+	
+	
 }
