@@ -28,16 +28,16 @@ public class Fidemember implements Serializable
 	@Column(name = "fidemember_id", nullable = false)
 	private int fidemeberId;
 	
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "chessplayer_id", referencedColumnName = "chessplayer_id", foreignKey = @ForeignKey(name = "FK_FIDEMEMBER_CHESSPLAYER"))
 	private Chessplayer chessplayer;
 	
-	@OneToMany(cascade = CascadeType.ALL)
+	@OneToMany(cascade = CascadeType.PERSIST)
 	@OrderBy("chesstitleOrder ASC")
 	@JoinColumn(foreignKey = @ForeignKey(name = "FK_FIDEMEMBER_TITLE"))
 	private Set<Chesstitle> chesstitles;
 	
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(foreignKey = @ForeignKey(name = "FK_FIDEMEMBER_RATING"))
 	private FidememberRating rating;
 	

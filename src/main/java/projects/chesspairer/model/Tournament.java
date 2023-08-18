@@ -46,7 +46,7 @@ public class Tournament implements Serializable
 	@Column(name = "tournament_type", nullable = false, columnDefinition = "varchar(32)")
 	private int tournamentType;
 	
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "pairingsystem_id", referencedColumnName = "pairingsystem_id", foreignKey = @ForeignKey(name = "FK_TOURNAMENT_PAIRINGSYSTEM"))
 	private Pairingsystem pairingsystem;
 	

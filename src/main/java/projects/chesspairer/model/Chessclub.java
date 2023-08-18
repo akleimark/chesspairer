@@ -24,7 +24,7 @@ public class Chessclub implements Serializable
 	@Column(name = "chessclub_id")
 	private int chessclubId;
 	
-	@Column(name = "chessclub_name", columnDefinition = "varchar(128)")
+	@Column(name = "chessclub_name", columnDefinition = "varchar(128)", unique = true)
 	private String chessclubName;
 	
 	public Chessclub()

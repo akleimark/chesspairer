@@ -44,15 +44,15 @@ public class Chessplayer implements Serializable
 	@Column(name = "birthdate", nullable = false)
 	private LocalDate birthdate;
 	
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "federation_id", referencedColumnName = "federation_id", foreignKey = @ForeignKey(name = "FK_CHESSPLAYER_FEDERATION"))
 	private Federation federation;
 	
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "chessclub_id", nullable = false, referencedColumnName = "chessclub_id", foreignKey = @ForeignKey(name = "FK_CHESSPLAYER_CHESSCLUB"))
 	private Chessclub chessclub;
 	
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne(cascade = CascadeType.PERSIST)
 	private Fidemember fidemember;
 	
 	public String getName()
