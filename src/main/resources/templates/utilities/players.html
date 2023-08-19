@@ -14,6 +14,8 @@
 		crossorigin="anonymous"></script>
 	<script src="https://code.jquery.com/jquery-3.7.0.js"
 		integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous"></script>
+	<script th:src="@{/js/custom.js}"></script>
+	
 	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
 		<div class="container-fluid">
 			<a class="navbar-brand" href="#">Navbar</a>
@@ -51,8 +53,8 @@
 					<th scope="col">EloRating</th>
 					<th scope="col">Federation</th>
 					<th scope="col">Club</th>
-					<th scope="col">Redigera</th>
-					<th scope="col">Radera</th>
+					<th scope="col">Edit</th>
+					<th scope="col">Delete</th>
 
 				</tr>
 			</thead>
@@ -160,6 +162,13 @@
 	<script>
 		jQuery("#save_chessplayer").click(function () 
 		{
+			var errors = checkSaveChessplayerForm(); 
+			if( errors != "")
+			{				
+				alert(errors);
+				return;
+			}
+			
 			var url = "/chessplayer/update";
 			jQuery.ajax(
 			{
@@ -174,8 +183,8 @@
 					"biologicalSex": jQuery('input[name="biologicalSex"]:checked').val(),
 					"chessclub":
 					{
-						"chessclubId": 1,
-						"chessclubName": "SA Mark"
+						"chessclubId": jQuery('#chessclub').find(":selected").val(),
+						"chessclubName": jQuery('#chessclub').find(":selected").text()
 					}
 				}),
 				dataType: "json",
