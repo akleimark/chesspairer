@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import projects.chesspairer.model.Chessclub;
 import projects.chesspairer.model.Chessplayer;
 import projects.chesspairer.service.ChessclubService;
 import projects.chesspairer.service.ChessplayerService;
@@ -35,6 +36,14 @@ public class WebController
 		return "utilities/players";
 	}
 	
+	@GetMapping("utilities/clubs")
+	public String clubs(Model model)
+	{				
+		model.addAttribute("chessclub", new Chessclub());
+		model.addAttribute("chessclubs", chessclubService.getAllChessclubs());
+		return "utilities/clubs";
+	}
+	
 	@PostMapping("/add-chessplayer")
     public String addChessplayer(@ModelAttribute Chessplayer chessplayer) 
 	{				
@@ -42,13 +51,11 @@ public class WebController
 		return "redirect:utilities/players";
     }
 	
-	@PostMapping("/update-chessplayer")
-    public String updateChessplayer(@ModelAttribute Chessplayer chessplayer) 
+	@PostMapping("/add-chessclub")
+    public String addChessclub(@ModelAttribute Chessclub chessclub) 
 	{				
-		System.out.println("Id: " + chessplayer.getChessplayerId());
-		
-		//chessplayerService.updateChessplayer(chessplayer);
-		return "redirect:utilities/players";
+		chessclubService.saveChessclub(chessclub);
+		return "redirect:utilities/clubs";
     }
 	
 	

@@ -9,14 +9,14 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "fidemember_rating")
-public class FidememberRating implements Serializable
+@Table(name = "chessplayer_rating")
+public class ChessplayerRating implements Serializable
 {
-	private static final long serialVersionUID = -8755769040678702667L;
+	private static final long serialVersionUID = 1679807544352689286L;
 	
 	@Id
-	@Column(name = "fidemember_id", updatable = false)
-	private int fidememberId;
+	@Column(name = "chessplayer_id", updatable = false)
+	private int chessplayerId;
 	
 	@Column(name = "standard_rating", columnDefinition = "smallint", nullable = false)
 	private int standardRating;
@@ -26,50 +26,50 @@ public class FidememberRating implements Serializable
 	
 	@Column(name = "blitz_rating", columnDefinition = "smallint", nullable = false)
 	private int blitzRating;
-	
-	public FidememberRating(int fidememberId, int standardRating, int rapidRating, int blitzRating)
+
+	public ChessplayerRating(int chessplayerId, int standardRating, int rapidRating, int blitzRating)
 	{
-		this.fidememberId = fidememberId;
+		this.chessplayerId = chessplayerId;
 		this.standardRating = standardRating;
 		this.rapidRating = rapidRating;
 		this.blitzRating = blitzRating;
 	}
-	
-	public int getFidememberId()
+
+	public int getChessplayerId()
 	{
-		return fidememberId;
+		return chessplayerId;
 	}
-	
-	public void setFidememberId(int fidememberId)
+
+	public void setChessplayerId(int chessplayerId)
 	{
-		this.fidememberId = fidememberId;
+		this.chessplayerId = chessplayerId;
 	}
-	
+
 	public int getStandardRating()
 	{
 		return standardRating;
 	}
-	
+
 	public void setStandardRating(int standardRating)
 	{
 		this.standardRating = standardRating;
 	}
-	
+
 	public int getRapidRating()
 	{
 		return rapidRating;
 	}
-	
+
 	public void setRapidRating(int rapidRating)
 	{
 		this.rapidRating = rapidRating;
 	}
-	
+
 	public int getBlitzRating()
 	{
 		return blitzRating;
 	}
-	
+
 	public void setBlitzRating(int blitzRating)
 	{
 		this.blitzRating = blitzRating;
@@ -78,7 +78,7 @@ public class FidememberRating implements Serializable
 	@Override
 	public int hashCode()
 	{
-		return Objects.hash(blitzRating, fidememberId, rapidRating, standardRating);
+		return Objects.hash(blitzRating, chessplayerId, rapidRating, standardRating);
 	}
 
 	@Override
@@ -96,8 +96,9 @@ public class FidememberRating implements Serializable
 		{
 			return false;
 		}
-		FidememberRating other = (FidememberRating) obj;
-		return blitzRating == other.blitzRating && fidememberId == other.fidememberId
+		ChessplayerRating other = (ChessplayerRating) obj;
+		return blitzRating == other.blitzRating && chessplayerId == other.chessplayerId
 				&& rapidRating == other.rapidRating && standardRating == other.standardRating;
 	}
+	
 }

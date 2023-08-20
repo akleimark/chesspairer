@@ -3,6 +3,7 @@ package projects.chesspairer.model;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
+import java.util.Set;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -13,7 +14,9 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.OrderBy;
 import jakarta.persistence.Table;
 
 @Entity(name = "Chessplayer")
@@ -44,6 +47,9 @@ public class Chessplayer implements Serializable
 	@Column(name = "birthdate", nullable = false)
 	private LocalDate birthdate;
 	
+	@Column(name = "fide_id", nullable = true)
+	private int fideId;
+	
 	@ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "federation_id", referencedColumnName = "federation_id", foreignKey = @ForeignKey(name = "FK_CHESSPLAYER_FEDERATION"))
 	private Federation federation;
@@ -53,8 +59,14 @@ public class Chessplayer implements Serializable
 	private Chessclub chessclub;
 	
 	@OneToOne(cascade = CascadeType.PERSIST)
-	private Fidemember fidemember;
-	
+	@JoinColumn(foreignKey = @ForeignKey(name = "FK_CHESSPLAYER_RATING"))
+	private ChessplayerRating rating;
+		
+	@OneToMany(cascade = CascadeType.PERSIST)
+	@OrderBy("chesstitleOrder ASC")
+	@JoinColumn(foreignKey = @ForeignKey(name = "FK_CHESSPLAYER_TITLE"))
+	private Set<Chesstitle> chesstitles;
+
 	public String getName()
 	{
 		return firstname + " " + lastname;
@@ -66,7 +78,7 @@ public class Chessplayer implements Serializable
 	}
 	
 	public Chessplayer(int chessplayerId, String firstname, String lastname, String biologicalSex, LocalDate birthdate,
-			Federation federation, Chessclub chessclub)
+			Federation federation, Chessclub chessclub, int fideId, ChessplayerRating rating)
 	{
 		this.chessplayerId = chessplayerId;
 		this.firstname = firstname;
@@ -75,6 +87,8 @@ public class Chessplayer implements Serializable
 		this.birthdate = birthdate;
 		this.federation = federation;
 		this.chessclub = chessclub;
+		this.fideId = fideId;
+		this.rating = rating;
 	}
 	
 	public int getChessplayerId()
@@ -122,6 +136,16 @@ public class Chessplayer implements Serializable
 		this.birthdate = birthdate;
 	}
 	
+	public int getFideId()
+	{
+		return fideId;
+	}
+	
+	public void setFideId(int fideId)
+	{
+		this.fideId = fideId;
+	}
+	
 	public Chessclub getChessclub()
 	{
 		return chessclub;
@@ -141,33 +165,43 @@ public class Chessplayer implements Serializable
 	{
 		this.federation = federation;
 	}
-	
+
+	public ChessplayerRating getRating()
+	{
+		return rating;
+	}
+
+	public void setRating(ChessplayerRating rating)
+	{
+		this.rating = rating;
+	}
+
 	public int getEloRating(String type)
 	{
-		if(fidemember == null)
+		if(rating == null)
 		{
 			return 0;
 		}
-		return fidemember.getRating(type);
-		
-	}
-	
-	public String getChesstitle()
-	{
-		if(fidemember == null)
+		switch(type)
 		{
-			return "";
+			case "standard":
+				return rating.getStandardRating();
+			case "rapid":
+				return rating.getStandardRating();
+			case "blitz":
+				return rating.getBlitzRating();
+			default:
+				return 0;
 		}
-		
-		return fidemember.getHighestTitle();
 	}
 	
 	@Override
 	public int hashCode()
 	{
-		return Objects.hash(biologicalSex, birthdate, federation, chessclub, chessplayerId, firstname, lastname);
+		return Objects.hash(biologicalSex, birthdate, chessclub, chessplayerId, federation, fideId, firstname, lastname,
+				rating);
 	}
-	
+
 	@Override
 	public boolean equals(Object obj)
 	{
@@ -185,8 +219,14 @@ public class Chessplayer implements Serializable
 		}
 		Chessplayer other = (Chessplayer) obj;
 		return Objects.equals(biologicalSex, other.biologicalSex) && Objects.equals(birthdate, other.birthdate)
-				&& Objects.equals(chessclub, other.chessclub) && Objects.equals(federation, other.federation)
-				&& chessplayerId == other.chessplayerId && Objects.equals(firstname, other.firstname)
-				&& Objects.equals(lastname, other.lastname);
+				&& Objects.equals(chessclub, other.chessclub) && chessplayerId == other.chessplayerId
+				&& Objects.equals(federation, other.federation) && fideId == other.fideId
+				&& Objects.equals(firstname, other.firstname) && Objects.equals(lastname, other.lastname)
+				&& Objects.equals(rating, other.rating);
 	}
+	
+	
+	
+	
+	
 }
