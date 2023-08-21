@@ -6,5 +6,6 @@ import projects.chesspairer.model.Chessclub;
 
 public interface ChessclubRepository extends JpaRepository<Chessclub, String>
 {
+	Chessclub findChessclubByChessclubName(String name);
 	
 }

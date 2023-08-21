@@ -28,6 +28,11 @@ public class ChessclubService
 	{
 		return repository.save(chessclub);
 	}
+
+	public Chessclub findChessclubByChessclubName(String name)
+	{
+		return repository.findChessclubByChessclubName(name);
+	}
 	
 	
 }

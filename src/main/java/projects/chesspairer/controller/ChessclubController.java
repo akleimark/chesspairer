@@ -7,7 +7,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -38,4 +37,17 @@ public class ChessclubController
 		Chessclub newChessclub = chessclubService.saveChessclub(chessclub);		
 		return new ResponseEntity<>(newChessclub, HttpStatus.CREATED);
 	}
+	
+	@PostMapping("/find/name")
+	public ResponseEntity<Chessclub> findbyChessclubName(@RequestBody Chessclub chessclub)
+	{
+		Chessclub aChessclub = chessclubService.findChessclubByChessclubName(chessclub.getChessclubName());
+		if(aChessclub == null)
+		{
+			return new ResponseEntity<>(new Chessclub(), HttpStatus.OK);
+		}
+		return new ResponseEntity<>(aChessclub, HttpStatus.OK);	
+	}
+	
+	
 }

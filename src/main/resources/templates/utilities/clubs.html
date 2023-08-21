@@ -83,17 +83,48 @@
 						method="post">
 						<div class="modal-body">
 							
-							<input class="form-control" placeholder="club" type="text" th:field="*{chessclubName}" /><br />
+							<input id="chessclubName" class="form-control" placeholder="club" type="text" th:field="*{chessclubName}" required /><br />
 							
 						</div>
 						<div class="modal-footer">
 							<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-							<button type="submit" id="addChessplayer" class="btn btn-primary">Add</button>
+							<button type="button" id="addChessclub" class="btn btn-primary">Add</button>
 						</div>
 					</form>
 				</div>
 			</div>
 		</div>
+		
+		<script>
+			jQuery("#addChessclub").click(function()
+			{
+				jQuery.ajax(
+				{
+					url: "/chessclub/find/name",
+					type: "POST",
+					data:JSON.stringify(
+					{													
+						"chessclubName": jQuery("#chessclubName").val()					
+					}),
+					dataType: "json",
+					contentType: "application/json",
+					success: function (result) 
+					{
+						if(result["chessclubName"] == "")
+						{
+							jQuery("#addClubForm").submit();		
+						}
+						else
+						{
+							alert("The chessclub already exists.");	
+						}															
+					}					 										
+					
+				});								
+			});						
+		</script>
+		
+		
 </body>
 
 </html>
